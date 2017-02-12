@@ -1,0 +1,24 @@
+{
+  "name": "sqlite3-utils",
+  "version": "1.0.0",
+  "description": "Utils for node-sqlite3 including promises and a transactional DML queue",
+  "main": "index.js",
+  "keywords": [
+    "sqlite3",
+    "promise",
+    "promises",
+    "node-sqlite3",
+    "sqlite",
+    "transactions",
+    "queue",
+    "util",
+    "utils"
+  ],
+  "author": "Brian Hammond <brian@fictorial.com>",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.6.1",
+    "is-promise": "^2.1.0",
+    "sqlite3": "^3.1.8"
+  }
+}
