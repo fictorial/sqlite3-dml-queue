@@ -5,6 +5,10 @@
 - a serial transaction queue
   - send all DML through the queue and you won't hit the
     SQLite error "cannot start a transaction while in a transaction"
+  - enqueue 'work functions' which are run in a transaction
+    - work functions must return a Promise
+    - if the Promise resolves the transaction is committed
+    - if the Promise rejects the transaction is rolled back
 
 # Example
 
