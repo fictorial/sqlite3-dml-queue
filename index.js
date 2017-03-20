@@ -1,11 +1,11 @@
 const isPromise = require('is-promise')
-const debug = require('debug')('simpler-sqlite3')
+const debug = require('debug')('sqlite3-utils')
 
 module.exports = function (db) {
   function exec (statement) {
     debug('EXEC: %s', statement)
     return new Promise(function (resolve, reject) {
-      db.run(statement, function (error) {
+      db.exec(statement, function (error) {
         if (error) {
           reject(error)
         } else {
