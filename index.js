@@ -101,6 +101,9 @@ module.exports = function (db) {
     run,
     all: fetch.bind(null, 'all'),
     get: fetch.bind(null, 'get'),
-    dml: enqueueWork
+    dml: enqueueWork,
+    transaction: enqueueWork,
+    tx: enqueueWork,
+    enqueue: enqueueWork
   }
 }
