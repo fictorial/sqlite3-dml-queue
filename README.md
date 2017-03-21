@@ -1,37 +1,16 @@
-# Utils for node-sqlite3
+# A DML serialization queue for node-sqlite3
 
-- a promises interface to `Database.{exec, run, all, get}`
-  - I haven't done this for `Statement`
-- a serial transaction queue
-  - send all DML through the queue and you won't hit the
-    SQLite error "cannot start a transaction while in a transaction"
-  - enqueue 'work functions' which are run in a transaction
-    - work functions must return a Promise
-    - if the Promise resolves the transaction is committed
-    - if the Promise rejects the transaction is rolled back
+Why does this exist?  It is a solution to the problem wherein a transaction is
+started with node-sqlite3 and while active, an async handler of some kind is
+run which also tries to start a transaction.
 
-# Example
+This leads to the SQLite error "cannot start a transaction while in a
+transaction". Thus, here anything that modifies the database is put into a
+queue of work functions.
 
-    sqlite3-utils(master) $ DEBUG=* node example.js
-
-    simpler-sqlite3 enqueued DML work fn worker1; length=1 +0ms
-    simpler-sqlite3 calling work fn worker1 +1ms
-    example worker 1 was called; let's get to work +1ms
-    simpler-sqlite3 EXEC: create table foo(x integer) +1ms
-    simpler-sqlite3 enqueued DML work fn worker2; length=2 +2ms
-    simpler-sqlite3 enqueued DML work fn worker3; length=3 +0ms
-    simpler-sqlite3 RUN: insert into foo(x) values(?) 42 +2ms
-    example insert result: changes = 1 lastID = 1 +1ms
-    simpler-sqlite3 ALL: select * from foo +0ms
-    example fetched all rows: [ { x: 42 } ] +1ms
-    simpler-sqlite3 work fn worker1 done OK; COMMIT; queue length = 2 +1ms
-    simpler-sqlite3 calling work fn worker2 +0ms
-    example worker 2 was called; let's get to work; we just delay for 2s +0ms
-    simpler-sqlite3 work fn worker2 done OK; COMMIT; queue length = 1 +2s
-    simpler-sqlite3 calling work fn worker3 +0ms
-    example worker 3 was called; let's get to work +0ms
-    simpler-sqlite3 work fn worker3 done OK; COMMIT; queue length = 0 +0ms
-    simpler-sqlite3 work queue is empty; done for now. +0ms
+The work functions are wrapped in transactions which rollback if any error
+is thrown; else the work is committed and the next work enqueued work function
+is run.
 
 # Author
 

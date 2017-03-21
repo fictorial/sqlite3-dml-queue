@@ -564,6 +564,12 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
+sqlite3-promises@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sqlite3-promises/-/sqlite3-promises-1.0.0.tgz#7c5be5c9c6caca4fe5c8d3ff79924418ba1838ab"
+  dependencies:
+    sqlite3 "^3.1.8"
+
 sqlite3@^3.1.8:
   version "3.1.8"
   resolved "https://registry.yarnpkg.com/sqlite3/-/sqlite3-3.1.8.tgz#4cbcf965d8b901d1b1015cbc7fc415aae157dfaa"
